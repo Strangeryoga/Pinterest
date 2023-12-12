@@ -15,17 +15,7 @@ passport.use(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-// Route to render the profile page, only accessible if user is logged in
-router.get('/profile', isLoggedIn, async function(req, res, next) {
-  const user = await userModel.findOne({
-    username: req.session.passport.user
-  })
-  .populate("posts");
-  console.log(user);
-  res.render('profile', {user});
+  res.render('index', { title: 'Express', nav: false });
 });
 
 // Route to handle user registration
@@ -44,7 +34,7 @@ router.post('/register', function(req, res){
 
 // Route to render the login page
 router.get('/login', function(req, res, next) {
-  res.render('login', {error: req.flash('error')});
+  res.render('login', {error: req.flash('error'), nav: false});
 });
 
 // Route to handle user login using Passport local strategy
@@ -56,24 +46,78 @@ router.post('/login', passport.authenticate('local', {
   // Callback function for handling login
 });
 
-// Route to handle user logout
-router.get('/logout', function(req, res) {
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect('/');
-  });
-})
-
-// Route to render the feed page
-router.get('/feed', function(req, res, next) {
-  res.render('feed');
-})
+// Route to render the profile page, only accessible if user is logged in
+router.get('/profile', isLoggedIn, async function(req, res, next) {
+  const user = await userModel.findOne({username: req.session.passport.user})
+  .populate("posts");
+  console.log(user);
+  res.render('profile', {user, nav: true});
+});
 
 // Middleware function to check if the user is authenticated
 function isLoggedIn(req, res, next) {
   if(req.isAuthenticated()) return next();
   res.redirect('/login');
 }
+
+// Route to render the feed page
+router.get('/feed', isLoggedIn, async function(req, res, next) {
+  const user = await userModel.findOne({username: req.session.passport.user})
+  const posts = await postModel.find()
+  .populate("user") 
+  res.render('feed', {user, posts, nav: true});
+})
+
+// Route to handle user logout
+router.get('/logout', function(req, res, next) {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+})
+
+// Route to handle profile image file upload
+router.post('/fileupload', isLoggedIn, upload.single("image"), async function(req, res, next) {
+  const user = await userModel.findOne({username: req.session.passport.user});
+  user.profileImage = req.file.filename;
+  await user.save();
+  res.redirect("/profile");
+})
+
+// Route to add the pins
+router.get('/add', isLoggedIn, async function(req, res, next) {
+  const user = await userModel.findOne({username: req.session.passport.user})
+  res.render('add', {user, nav: true});
+});
+
+// Route to add the image and it's details
+router.post('/createpost', isLoggedIn, upload.single("postImage"), async function(req, res, next) {
+  const user = await userModel.findOne({username: req.session.passport.user});
+  const post = await postModel.create({
+    user: user._id,
+    title: req.body.title,
+    description: req.body.description,
+    image: req.file.filename
+  });
+  
+  user.posts.push(post._id);
+  await user.save();
+  res.redirect("/profile");
+});
+
+// Route to show the posts in our profile
+router.get('/show/posts', isLoggedIn, async function(req, res, next) {
+  const user = await userModel.findOne({username: req.session.passport.user})
+  .populate("posts");
+  console.log(user);
+  res.render('show', {user, nav: true});
+});
+
+
+
+
+
+
 
 // Route to handle file upload
 router.post('/upload', isLoggedIn, upload.single("file") , async function(req, res, next) {
@@ -90,12 +134,6 @@ router.post('/upload', isLoggedIn, upload.single("file") , async function(req, r
   await user.save();
   res.redirect('/profile');
 })
-
-
-
-
-
-
 
 // router.get('/alluserposts', async function(req, res, next) {
 //   let user = await userModel

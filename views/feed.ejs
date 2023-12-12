@@ -5,15 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feed</title>
   <link rel="stylesheet" href="./stylesheets/feed.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+
 
 </head>
 <body>
 
+    <% if(nav === true) { %>
+        <div class="w-full px-10 py-3 flex justify-between bg-zinc-800 text-white items-center">
+          <h3>Pinterest</h3>
+          <div class="flex gap-10 items-center">
+            <a href="/profile">Profile</a><a href="/feed">Feed</a><a class="px-3 py-2 bg-red-700 text-white rounded-lg" href="/logout">Logout</a>
+          </div>
+        </div>
+        <% }%>
 
 
  
 <div class="container">
-     
+     <% posts.forEach(function(e) { %>
+    <div class="box">
+        <div class="caption">@<%= e.user.username %> </div>
+        <a href="ttps://oriontralelblog.com/wp-content/uploads/2019/08/IMG_6310.jpg" >
+        <img src="/images/uploads/<%= e.image %>" alt="image"></a>
+     <div class="caption"><%= e.title %> </div>
+
+</div> 
+<% }) %>
     
  <div class="box">
                <a href="ttps://oriontralelblog.com/wp-content/uploads/2019/08/IMG_6310.jpg" >

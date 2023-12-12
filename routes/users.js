@@ -16,11 +16,10 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  // Array of posts associated with the user
-  posts: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Post'  // Reference to the 'Post' model, indicating that the 'posts' field is linked to Post documents
-  }],
+  // User's profile image
+  profileImage: {
+    type: String,
+  },
   // User's profile picture URL
   dp: {
     type: String,
@@ -36,6 +35,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // User's board
+  boards: {
+    type: Array,
+    default: []
+  },
+  // Array of posts associated with the user
+  posts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post'  // Reference to the 'Post' model, indicating that the 'posts' field is linked to Post documents
+  }],
 });
 
 // Applying the Passport Local Mongoose plugin to the schema

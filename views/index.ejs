@@ -1,28 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
-  <link rel="stylesheet" href="./stylesheets/style.css">
-</head>
-<body>
-  <div class="container">
-    <div class="content">
-      <!--pinterest logo-->
-      <img src="https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png" alt="pin logo" class="img1" />
-      <p class="header">Make account to see more</p>
+<% include ./partials/header.ejs %>
+
+<div class="w-full h-screen  bg-cover bg-[url(https://images.unsplash.com/photo-1702219432682-169f541c324e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDIzfDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D)] flex items-center justify-center">
+  <div class="w-[25vw] h-full  bg-white px-16 py-10 rounded-[30px]">
+    <!--pinterest logo-->
+    <div class="relative inset-0 flex">
+           <img src="https://i.pinimg.com/originals/d3/d1/75/d3d175e560ae133f1ed5cd4ec173751a.png" alt="pin logo" class="m-auto w-[70px]" />
+  </div>
+  <h1 class="text-3xl text-center font-semibold text-zinc-700 tracking-tighter capitalize leading-none mt-3">Welcome to Pinterest</h1>
+  <p class="items-center text-center mt-2 mb-4">Find new ideas to try</p>
 
       <form action="/register" method="post">
         <input type="email" name="email" placeholder="Email" class="detail" /><br />
         <input type="text" name="username" placeholder="Username" class="detail" /><br />
         <input type="text" name="fullname" placeholder="Full Name" class="detail" /><br />
         <input type="password" name="password" placeholder="Password" class="detail" />
-        <input type="submit" class="btn int" value="Register Account" id="">
+        <input type="submit" class="block mt-2 w-full px-3 py-2 bg-red-600 text-white rounded-full cursor-pointer" value="Register Account" id="">
       </form>
-      <a href="/forget">Forgot your password?</a>
 
-      <p class="or">OR</p>
+      <p class="items-center text-center">OR</p>
       <button class="btn fbk">
         <i
           class="fab fa-facebook fa-lg"
@@ -43,11 +38,10 @@
           By continuing, you agree to Pinterest's
         </p>
         <hr />
-        <a href="/login">Already on Pinterest ? Login</a>
+        Already on Pinterest ?<a href="/login" class="font-semibold"> Login</a>
       </footer>
     </div>
   </div>
 
-  
-</body>
-</html>
+<% include ./partials/footer.ejs %>
+

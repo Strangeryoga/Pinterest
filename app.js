@@ -11,7 +11,7 @@ const flash = require("connect-flash");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const passport = require('passport');
-const users = require('./routes/users');
+// const users = require('./routes/users');
 
 // Creating an Express application
 var app = express();
